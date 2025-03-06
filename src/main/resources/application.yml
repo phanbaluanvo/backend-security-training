@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: CyberSecurity Training for KPU
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: jdbc:mysql://${DB_HOST}:3306/agent_phisher?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+    driver-class-name:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+server:
+  port: ${SERVER_PORT}
+
+variables:
+  jwt:
+    base64Secret: ${JWT_SECRET}
+    accessTokenValidTime: ${JWT_ACCESS_EXPIRATION}
+    refreshTokenValidTime: ${JWT_REFRESH_EXPIRATION}
+  jsonFormat:
+    dateTime: ${DATE_TIME_FORMAT:yyyy-MM-dd HH:mm:ss}
+    timeZone: ${TIME_ZONE:Asia/Ho_Chi_Minh}

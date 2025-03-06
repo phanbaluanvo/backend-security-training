@@ -1,0 +1,33 @@
+services:
+  app:
+#    image: backend-cybersecurity-training:latest # Thay bằng tên image của bạn
+    build:
+      context: . # Thư mục chứa Dockerfile.dev
+      dockerfile: Dockerfile.dev
+    command: ./gradlew bootRun
+    volumes:
+      - .:/app
+      - ~/.gradle:/root/.gradle
+    ports:
+      - "8080:8080" # Map cổng container với máy host
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/agent_phisher?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - db # Đảm bảo cơ sở dữ liệu khởi động trước ứng dụng
+
+  db:
+    image: mysql:latest
+    container_name: mysql_db
+    ports:
+      - "3306:3306" # Map cổng container với máy host
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456 # Mật khẩu root của MySQL
+      MYSQL_DATABASE: agent_phisher # Tên cơ sở dữ liệu mặc định
+    volumes:
+      - db_data:/var/lib/mysql # Lưu trữ dữ liệu MySQL để không bị mất khi khởi động lại container
+
+volumes:
+  db_data:
