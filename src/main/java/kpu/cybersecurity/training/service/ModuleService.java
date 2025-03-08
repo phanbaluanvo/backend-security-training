@@ -55,8 +55,8 @@ public class ModuleService {
         return res;
     }
 
-    public List<ResModuleDTO> getListAllModule() {
-        return moduleRepository.findAll()
+    public List<ResModuleDTO> getListModules(Specification<Module> spec) {
+        return moduleRepository.findAll(spec)
                 .stream().map(Module::toResponseDto).toList();
     }
 

@@ -13,6 +13,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/lessons")
 public class LessonController {
@@ -35,6 +37,15 @@ public class LessonController {
             ) {
         return ResponseEntity.ok(this.lessonService.getPagingLesson(spec,pageable));
     }
+
+    @GetMapping("/get/list")
+    @ApiMessage("Get List Lessons")
+    private ResponseEntity<List<ResLessonDTO>> getListModules(
+            @Filter Specification<Lesson> spec
+    ) {
+        return ResponseEntity.ok(lessonService.getListLessons(spec));
+    }
+
 
     @GetMapping("/get/{lessonId}")
     @ApiMessage("Get Lesson Details")

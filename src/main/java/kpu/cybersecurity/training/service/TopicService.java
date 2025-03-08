@@ -7,7 +7,6 @@ import kpu.cybersecurity.training.domain.dto.response.ResTopicDTO;
 import kpu.cybersecurity.training.domain.dto.response.ResultPaginationDTO;
 import kpu.cybersecurity.training.domain.entity.Topic;
 import kpu.cybersecurity.training.repository.CourseRepository;
-import kpu.cybersecurity.training.repository.ModuleRepository;
 import kpu.cybersecurity.training.repository.TopicRepository;
 import kpu.cybersecurity.training.util.exception.UniqueException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +42,14 @@ public class TopicService {
 
     public ResultPaginationDTO<ResTopicDTO> getPagingTopic(Specification<Topic> spec, Pageable pageable) {
         Page<Topic> pageTopic = topicRepository.findAll(spec, pageable);
-        ResultPaginationDTO<ResTopicDTO> rs = new ResultPaginationDTO<>();
-        rs.setMetaAndResponse(pageTopic);
-        return rs;
+
+        ResultPaginationDTO<ResTopicDTO> res = new ResultPaginationDTO<>();
+        res.setMetaAndResponse(pageTopic);
+        return res;
     }
 
-    public List<ResTopicDTO> getAllTopics() {
-        return topicRepository.findAll()
+    public List<ResTopicDTO> getListTopics(Specification<Topic> spec) {
+        return topicRepository.findAll(spec)
                 .stream().map(Topic::toResponseDto)
                 .toList();
     }

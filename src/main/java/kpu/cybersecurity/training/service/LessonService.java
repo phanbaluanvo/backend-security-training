@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LessonService {
     @Autowired
@@ -58,6 +60,11 @@ public class LessonService {
         res.setMetaAndResponse(pageLesson);
 
         return res;
+    }
+
+    public List<ResLessonDTO> getListLessons(Specification<Lesson> spec) {
+        return lessonRepository.findAll(spec)
+                .stream().map(Lesson::toResponseDto).toList();
     }
 
     public Lesson getLessonByLessonId(Long lessonId) {

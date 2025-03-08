@@ -39,10 +39,12 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getPagingCourses(spec, pageable));
     }
 
-    @GetMapping("/get/all")
-    @ApiMessage("Get All Courses")
-    private ResponseEntity<List<ResCourseDTO>> getAllCourses() {
-        return ResponseEntity.ok(courseService.getAllCourses());
+    @GetMapping("/get/list")
+    @ApiMessage("Get List Courses")
+    private ResponseEntity<List<ResCourseDTO>> getListCourses(
+            @Filter Specification<Course> spec
+    ) {
+        return ResponseEntity.ok(courseService.getListCourses(spec));
     }
 
     @GetMapping("/get/{courseId}")

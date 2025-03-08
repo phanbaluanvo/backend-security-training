@@ -40,10 +40,12 @@ public class ModuleController {
         return ResponseEntity.ok(moduleService.getPagingModules(spec, pageable));
     }
 
-    @GetMapping("/get/all")
-    @ApiMessage("Get All Modules")
-    private ResponseEntity<List<ResModuleDTO>> getAllModules() {
-        return ResponseEntity.ok(moduleService.getListAllModule());
+    @GetMapping("/get/list")
+    @ApiMessage("Get List Modules")
+    private ResponseEntity<List<ResModuleDTO>> getListModules(
+            @Filter Specification<Module> spec
+    ) {
+        return ResponseEntity.ok(moduleService.getListModules(spec));
     }
 
     @GetMapping("/get/{moduleId}")

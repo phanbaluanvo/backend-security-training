@@ -40,11 +40,12 @@ public class TopicController {
         return ResponseEntity.ok(topicService.getPagingTopic(spec, pageable));
     }
 
-    @GetMapping("/get/all")
-    @ApiMessage("Get Paging Topics")
-    private ResponseEntity<List<ResTopicDTO>> getAllTopics() {
-
-        return ResponseEntity.ok(topicService.getAllTopics());
+    @GetMapping("/get/list")
+    @ApiMessage("Get List Topics")
+    private ResponseEntity<List<ResTopicDTO>> getListTopics(
+            @Filter Specification<Topic> spec
+    ) {
+        return ResponseEntity.ok(topicService.getListTopics(spec));
     }
 
     @GetMapping("/get/{topicId}")

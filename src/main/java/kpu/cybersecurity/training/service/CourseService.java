@@ -54,9 +54,10 @@ public class CourseService {
         return res;
     }
 
-    public List<ResCourseDTO> getAllCourses() {
-        return courseRepository.findAll()
-                .stream().map(Course::toResponseDto).toList();
+    public List<ResCourseDTO> getListCourses(Specification<Course> spec) {
+        return courseRepository.findAll(spec)
+                .stream().map(Course::toResponseDto)
+                .toList();
     }
 
     @Transactional
