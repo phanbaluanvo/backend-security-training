@@ -65,13 +65,24 @@ public class ModuleService {
         Module module = moduleRepository.findModuleByModuleId(moduleId)
                 .orElseThrow(() -> new EntityNotFoundException("Module ID not found"));
 
-        String newName = dto.getModuleName().trim();
+        boolean isChange = false;
 
-        if(!newName.equals(module.getModuleName())) {
-            checkExistsUniqueName(newName);
+        if(!dto.getModuleName().trim().equals(module.getModuleName())) {
+            checkExistsUniqueName(dto.getModuleName().trim());
+            isChange = true;
+        }
 
-            dto.setModuleName(newName);
+        if(!module.getCourse().getCourseId().equals(dto.getCourseId())) {
+            var course = this.courseService.getCourseByCourseId(dto.getCourseId());
+            module.setCourse(course);
+            isChange = true;
+        }
 
+        if(!dto.getDescription().equals(module.getDescription())) {
+            isChange = true;
+        }
+
+        if(isChange) {
             module.fromRequestDto(dto);
             moduleRepository.save(module);
         }

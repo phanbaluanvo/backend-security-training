@@ -28,10 +28,11 @@ public class LessonService {
     private LessonContentRepository lessonContentRepository;
     @Autowired
     private ModuleRepository moduleRepository;
+    @Autowired
+    private ModuleService moduleService;
 
     public void createLesson(ReqLessonDTO dto) {
-        Module module = moduleRepository.findModuleByModuleId(dto.getModuleId())
-                .orElseThrow(() -> new EntityNotFoundException("Module not found!"));
+        Module module = moduleService.getModuleByModuleId(dto.getModuleId());
 
         Lesson lesson = new Lesson();
         LessonContent content = new LessonContent();
@@ -77,9 +78,15 @@ public class LessonService {
         Lesson lesson = lessonRepository.findById(lessonId)
                 .orElseThrow(() -> new EntityNotFoundException("Lesson ID not found"));
 
+        boolean isChange = false;
+
+        if(!dto.getLessonName().trim().equals(lesson.getLessonName())){
+            isChange = true;
+        }
+
         if(!dto.getModuleId().equals(lesson.getModule().getModuleId())) {
-            lesson.setModule(this.moduleRepository.findModuleByModuleId(
-                    dto.getModuleId()).orElseThrow(() -> new EntityNotFoundException("Module ID not found")));
+            lesson.setModule(this.moduleService.getModuleByModuleId(dto.getModuleId()));
+            isChange = true;
         }
 
         if(dto.getContent() != null && !dto.getContent().isEmpty()) {
@@ -87,7 +94,10 @@ public class LessonService {
             content.setContent(dto.getContent());
         }
 
-        lessonRepository.save(lesson);
+        if(isChange) {
+            lesson.fromRequestDto(dto);
+            lessonRepository.save(lesson);
+        }
 
         return lessonRepository.findById(lessonId).get();
     }

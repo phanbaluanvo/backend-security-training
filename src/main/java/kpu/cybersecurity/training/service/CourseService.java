@@ -65,20 +65,33 @@ public class CourseService {
         Course course = courseRepository.findCourseByCourseId(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Course ID not found"));
 
-        if (!dto.getCourseName().equals(course.getCourseName())) {
-            checkExistsUniqueName(dto.getCourseName());
+        boolean isChange = false;
+
+        if (!dto.getCourseName().trim().equals(course.getCourseName())) {
+            checkExistsUniqueName(dto.getCourseName().trim());
+            isChange = true;
         }
 
-        course.fromRequestDto(dto);
+        if(!dto.getDescription().trim().equals(course.getDescription())) {
+            isChange = true;
+        }
 
         var currentTopic = (course.getTopic() != null) ? course.getTopic().getTopicId() : null;
 
         if (dto.getTopicId() != null) {
-            if(!dto.getTopicId().equals(currentTopic))
+            if(!dto.getTopicId().equals(currentTopic)) {
                 course.setTopic(this.topicService.getTopicByTopicId(dto.getTopicId()));
-        } else course.setTopic(null);
+                isChange = true;
+            }
+        } else {
+            course.setTopic(null);
+            isChange = true;
+        }
 
-        courseRepository.save(course);
+        if(isChange) {
+            course.fromRequestDto(dto);
+            courseRepository.save(course);
+        }
 
         return course;
     }
