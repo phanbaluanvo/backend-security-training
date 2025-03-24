@@ -21,9 +21,6 @@ public class Lesson implements Mapper<Lesson, ResLessonDTO, ReqLessonDTO> {
     @Column(nullable = false)
     private String lessonName;
 
-    @OneToOne(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
-    private LessonContent content;
-
     @ManyToOne
     @JoinColumn(name = "module_id", nullable = true)
     private Module module;
@@ -47,7 +44,6 @@ public class Lesson implements Mapper<Lesson, ResLessonDTO, ReqLessonDTO> {
         dto.setLessonId(this.getLessonId());
         dto.setLessonName(this.getLessonName());
         dto.setModule(this.getModule() != null? this.getModule().toResponseDto() : null);
-        dto.setLessonContent(this.getContent() != null? this.getContent().toResponseDto() : null);
 
         return dto;
     }

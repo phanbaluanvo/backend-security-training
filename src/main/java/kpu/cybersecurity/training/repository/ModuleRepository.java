@@ -1,5 +1,6 @@
 package kpu.cybersecurity.training.repository;
 
+import kpu.cybersecurity.training.domain.dto.response.ResModuleLessonProgressDTO;
 import kpu.cybersecurity.training.domain.entity.Module;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -36,7 +37,10 @@ public interface ModuleRepository extends JpaRepository<Module, Long>, JpaSpecif
             @Param("moduleIds") List<Long> moduleIds
     );
 
-
-
-
+    @Query(value = "SELECT new kpu.cybersecurity.training.domain.dto.response.ResModuleLessonProgressDTO(" +
+            "m.moduleId, m.moduleName)" +
+            "FROM Module m " +
+            "WHERE m.course.courseId = :courseId " +
+            "ORDER BY m.moduleId asc ")
+    List<ResModuleLessonProgressDTO>getModuleForProgress(Long courseId);
 }

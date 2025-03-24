@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "quiz_question")
 public class QuizQuestion {
 
     @EmbeddedId
@@ -17,12 +18,11 @@ public class QuizQuestion {
 
     @MapsId("quizId")
     @ManyToOne
-    @JoinColumn(name = "quizId")
+    @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
     @MapsId("questionId")
     @ManyToOne
-    @JoinColumn(name = "questionId")
+    @JoinColumn(name = "question_id")
     private Question question;
-
 }

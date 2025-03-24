@@ -36,4 +36,10 @@ variables:
     refreshTokenValidTime: ${JWT_REFRESH_EXPIRATION}
   jsonFormat:
     dateTime: ${DATE_TIME_FORMAT:yyyy-MM-dd HH:mm:ss}
-    timeZone: ${TIME_ZONE:Asia/Ho_Chi_Minh}
+    timeZone: ${TIME_ZONE:America/Vancouver}
+  aws:
+    accessKey: ${AWS_ACCESS_KEY}
+    secretKey: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
+    s3:
+      bucket: ${AWS_BUCKET}

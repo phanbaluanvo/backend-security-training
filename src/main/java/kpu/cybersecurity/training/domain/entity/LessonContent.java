@@ -18,7 +18,7 @@ public class LessonContent implements Mapper<LessonContent, ResLessonContentDTO,
     @Column(columnDefinition = "LONGTEXT", nullable = true)
     private String content;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "lesson_id", nullable = false, unique = true)
     private Lesson lesson;
 
@@ -26,6 +26,7 @@ public class LessonContent implements Mapper<LessonContent, ResLessonContentDTO,
     public ResLessonContentDTO toResponseDto() {
         ResLessonContentDTO dto = new ResLessonContentDTO();
 
+        dto.setLesson(this.getLesson().toResponseDto());
         dto.setLessonContentId(this.getLessonContentId());
         dto.setContent(this.getContent());
 

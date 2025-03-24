@@ -31,6 +31,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("com.turkraft.springfilter:jpa:3.1.9")
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	implementation("software.amazon.awssdk:s3:2.31.2")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	implementation("com.mysql:mysql-connector-j:9.2.0")
 	compileOnly("org.projectlombok:lombok")

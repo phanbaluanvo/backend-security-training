@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class EnvProperties {
     private Jwt jwt;
     private JsonFormat jsonFormat;
+    private Aws aws;
 
     @PostConstruct
     public void init() {
@@ -36,5 +37,20 @@ public class EnvProperties {
     public static class JsonFormat {
         private String dateTime;
         private String timeZone;
+    }
+
+    @Getter
+    @Setter
+    public static class Aws {
+        private String accessKey;
+        private String secretKey;
+        private String region;
+        private S3 s3;
+
+        @Getter
+        @Setter
+        public static class S3 {
+            private String bucket;
+        }
     }
 }

@@ -33,6 +33,9 @@ public class Course implements Mapper<Course, ResCourseDTO, ReqCourseDTO> {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Module> modules = new ArrayList<>();
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Quiz> quizzes = new ArrayList<>();
+
     @Column
     private String createdBy;
 
@@ -51,7 +54,7 @@ public class Course implements Mapper<Course, ResCourseDTO, ReqCourseDTO> {
 
         dto.setCourseId(this.getCourseId());
         dto.setCourseName(this.getCourseName().trim());
-        dto.setTopic(this.getTopic() != null? this.getTopic().toResponseDto() : null);
+        dto.setTopic(this.getTopic() != null ? this.getTopic().toResponseDto() : null);
         dto.setDescription(this.getDescription());
         dto.setCreatedBy(this.getCreatedBy());
         dto.setCreatedAt(this.getCreatedAt());
@@ -70,16 +73,13 @@ public class Course implements Mapper<Course, ResCourseDTO, ReqCourseDTO> {
 
     @PrePersist
     protected void onCreate() {
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent()?
-                SecurityUtil.getCurrentUserLogin().get() : "";
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
         this.createdAt = Instant.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent()?
-                SecurityUtil.getCurrentUserLogin().get() : "";
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
         this.updatedAt = Instant.now();
     }
 }
-

@@ -2,6 +2,7 @@ package kpu.cybersecurity.training.controller;
 
 import com.turkraft.springfilter.boot.Filter;
 import kpu.cybersecurity.training.domain.dto.request.ReqLessonDTO;
+import kpu.cybersecurity.training.domain.dto.response.ResLessonContentDTO;
 import kpu.cybersecurity.training.domain.dto.response.ResLessonDTO;
 import kpu.cybersecurity.training.domain.dto.response.ResultPaginationDTO;
 import kpu.cybersecurity.training.domain.entity.Lesson;
@@ -43,16 +44,27 @@ public class LessonController {
     private ResponseEntity<List<ResLessonDTO>> getListModules(
             @Filter Specification<Lesson> spec
     ) {
-        return ResponseEntity.ok(lessonService.getListLessons(spec));
+        return ResponseEntity.ok(lessonService.getListLessons(spec)
+                .stream().map(Lesson::toResponseDto)
+                .toList());
     }
 
 
     @GetMapping("/get/{lessonId}")
     @ApiMessage("Get Lesson Details")
-    private ResponseEntity<ResLessonDTO> getLessonById(
+    private ResponseEntity<ResLessonContentDTO> getLessonById(
             @PathVariable("lessonId") Long lessonId
     ) {
-        return ResponseEntity.ok(this.lessonService.getLessonByLessonId(lessonId).toResponseDto());
+        return ResponseEntity.ok(this.lessonService.getLessonDetailsByLessonId(lessonId).toResponseDto());
+    }
+
+    @GetMapping("/get/courses/{courseId}/lessons/{lessonId}")
+    @ApiMessage("Get Lesson Details by Course")
+    private ResponseEntity<ResLessonContentDTO> getLessonByCourseAndLessonId(
+            @PathVariable("courseId") Long courseId,
+            @PathVariable("lessonId") Long lessonId
+    ) {
+        return ResponseEntity.ok(this.lessonService.getLessonDetailsByCourseAndLessonId(courseId, lessonId).toResponseDto());
     }
 
     @PutMapping("/update/{lessonId}")

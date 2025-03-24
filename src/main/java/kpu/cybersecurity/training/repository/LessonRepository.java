@@ -29,4 +29,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Long>, JpaSpecif
             @Param("newModuleId") Long newModuleId,
             @Param("lessonIds") List<Long> lessonIds
     );
+
+    List<Lesson> findAllByModule_Course_CourseId(Long courseId);
+
 }

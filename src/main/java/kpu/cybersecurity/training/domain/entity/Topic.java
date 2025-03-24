@@ -24,9 +24,6 @@ public class Topic implements Mapper<Topic, ResTopicDTO, ReqTopicDTO> {
     @Column(nullable = false)
     private String topicName;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
-    private List<Question> questions = new ArrayList<>();
-
     @Column
     private String createdBy;
 
@@ -58,19 +55,15 @@ public class Topic implements Mapper<Topic, ResTopicDTO, ReqTopicDTO> {
         this.setTopicName(dto.getTopicName().trim());
     }
 
-
     @PrePersist
     protected void onCreate() {
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent()?
-                SecurityUtil.getCurrentUserLogin().get() : "";
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
         this.createdAt = Instant.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent()?
-                SecurityUtil.getCurrentUserLogin().get() : "";
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
         this.updatedAt = Instant.now();
-
     }
 }

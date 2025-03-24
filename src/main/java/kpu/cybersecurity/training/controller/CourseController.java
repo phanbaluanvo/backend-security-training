@@ -3,8 +3,10 @@ package kpu.cybersecurity.training.controller;
 import com.turkraft.springfilter.boot.Filter;
 import kpu.cybersecurity.training.domain.dto.request.ReqCourseDTO;
 import kpu.cybersecurity.training.domain.dto.response.ResCourseDTO;
+import kpu.cybersecurity.training.domain.dto.response.ResUploadDTO;
 import kpu.cybersecurity.training.domain.dto.response.ResultPaginationDTO;
 import kpu.cybersecurity.training.domain.entity.Course;
+import kpu.cybersecurity.training.service.AWSService;
 import kpu.cybersecurity.training.service.CourseService;
 import kpu.cybersecurity.training.util.annotation.ApiMessage;
 import kpu.cybersecurity.training.util.exception.UniqueException;
@@ -13,7 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.util.List;
 
 @RestController
@@ -23,11 +28,19 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private AWSService awsService;
+
     @PostMapping("/create")
     @ApiMessage("Create Course")
     private ResponseEntity<Void> createCourse(@RequestBody ReqCourseDTO dto) throws UniqueException {
         courseService.createCourse(dto);
         return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<ResUploadDTO> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(awsService.uploadFile(file, "images/"));
     }
 
     @GetMapping("/get")
